@@ -1,109 +1,127 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>ABTV</title>
+
+<title>ABTV Пульт</title>
 
 <style>
+
 body {
-    margin:0;
     background:black;
     color:white;
     font-family:Arial;
-    overflow:hidden;
+    text-align:center;
 }
 
-.logo {
-    position:fixed;
-    top:20px;
-    right:30px;
-    font-size:40px;
+
+h1 {
     color:#00aaff;
-    z-index:10;
 }
 
-.screen {
-    width:100vw;
-    height:100vh;
+
+button {
+
+    width:80%;
+    padding:25px;
+    margin:20px;
+
+    font-size:30px;
+
+    border-radius:20px;
+
+    background:#00aaff;
+    color:white;
+
+    border:none;
+
 }
 
-video {
-    width:100%;
-    height:100%;
-    object-fit:contain;
+
+button:active {
+
+    transform:scale(0.95);
+
 }
 
-.info {
-    position:fixed;
-    bottom:20px;
-    left:30px;
-    font-size:25px;
-}
 </style>
 
 </head>
 
+
 <body>
 
-<div class="logo">
-📺 ABTV
-</div>
 
-<div class="screen">
-<video id="player" controls autoplay>
-</video>
-</div>
+<h1>🎮 ABTV Пульт</h1>
 
-<div class="info">
-Сейчас играет: Барбоскины
-</div>
+
+<button onclick="barboskiny()">
+▶ Барбоскины
+</button>
+
 
 
 <script type="module">
 
-import { initializeApp } 
+
+import { initializeApp }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { getDatabase, ref, onValue }
+
+import { getDatabase, ref, set }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
-  authDomain: "abtv-c051d.firebaseapp.com",
-  databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "abtv-c051d",
-  storageBucket: "abtv-c051d.firebasestorage.app",
-  messagingSenderId: "351357236534",
-  appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+
+apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+
+authDomain: "abtv-c051d.firebaseapp.com",
+
+databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+
+projectId: "abtv-c051d",
+
+storageBucket: "abtv-c051d.firebasestorage.app",
+
+messagingSenderId: "351357236534",
+
+appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+
 };
+
 
 
 const app = initializeApp(firebaseConfig);
 
+
 const db = getDatabase(app);
 
-const video = document.getElementById("player");
 
 
-const driveVideo =
-"https://drive.google.com/uc?export=download&id=1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3";
+window.barboskiny = function(){
 
 
-onValue(ref(db,"tv"),(snapshot)=>{
+set(ref(db,"tv"),{
 
-let data = snapshot.val();
-
-if(data && data.command=="barboskiny"){
-
-video.src = driveVideo;
-video.play();
-
-}
+command:"barboskiny"
 
 });
 
 
+alert("Запущено 📺");
+
+
+}
+
+
+
 </script>
 
+
 </body>
+
 </html>
