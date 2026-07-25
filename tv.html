@@ -4,6 +4,7 @@
 <title>ABTV</title>
 
 <style>
+
 body {
     margin:0;
     background:black;
@@ -12,19 +13,22 @@ body {
     overflow:hidden;
 }
 
+
 .logo {
     position:fixed;
     top:20px;
     right:30px;
-    font-size:40px;
+    font-size:45px;
     color:#00aaff;
     z-index:10;
 }
+
 
 .screen {
     width:100vw;
     height:100vh;
 }
+
 
 video {
     width:100%;
@@ -32,78 +36,112 @@ video {
     object-fit:contain;
 }
 
+
 .info {
     position:fixed;
     bottom:20px;
     left:30px;
     font-size:25px;
 }
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="logo">
 📺 ABTV
 </div>
 
+
 <div class="screen">
-<video id="player" controls autoplay>
-</video>
+
+<video id="player" controls autoplay></video>
+
 </div>
+
 
 <div class="info">
 Сейчас играет: Барбоскины
 </div>
 
 
+
 <script type="module">
+
 
 import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 
 import { getDatabase, ref, onValue }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
-  authDomain: "abtv-c051d.firebaseapp.com",
-  databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "abtv-c051d",
-  storageBucket: "abtv-c051d.firebasestorage.app",
-  messagingSenderId: "351357236534",
-  appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+
+apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+
+authDomain: "abtv-c051d.firebaseapp.com",
+
+databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+
+projectId: "abtv-c051d",
+
+storageBucket: "abtv-c051d.firebasestorage.app",
+
+messagingSenderId: "351357236534",
+
+appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+
 };
+
 
 
 const app = initializeApp(firebaseConfig);
 
+
 const db = getDatabase(app);
 
-const video = document.getElementById("player");
+
+const player = document.getElementById("player");
 
 
-const driveVideo =
+
+const videoURL =
 "https://drive.google.com/uc?export=download&id=1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3";
+
 
 
 onValue(ref(db,"tv"),(snapshot)=>{
 
+
 let data = snapshot.val();
 
-if(data && data.command=="barboskiny"){
 
-video.src = driveVideo;
-video.play();
+
+if(data && data.command === "barboskiny"){
+
+
+player.src = videoURL;
+
+
+player.play();
+
 
 }
+
 
 });
 
 
+
 </script>
+
 
 </body>
 </html>
