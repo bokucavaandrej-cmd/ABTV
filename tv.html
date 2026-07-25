@@ -1,106 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ABTV TV</title>
+<title>ABTV</title>
 
 <style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    background: black;
-    color: white;
-    font-family: Arial;
-    overflow: hidden;
+    margin:0;
+    background:black;
+    color:white;
+    font-family:Arial;
+    overflow:hidden;
 }
-
-
-/* Логотип */
 
 .logo {
-    position: fixed;
-    top: 25px;
-    right: 30px;
-
-    font-size: 50px;
-    font-weight: bold;
-
-    color: white;
-
-    background: rgba(0,0,0,0.4);
-    padding: 10px 20px;
-
-    border-radius: 15px;
-
-    z-index: 2;
+    position:fixed;
+    top:20px;
+    right:30px;
+    font-size:40px;
+    color:#00aaff;
+    z-index:10;
 }
-
-
-/* Видео */
 
 .screen {
-    width: 100%;
-    height: 100vh;
+    width:100vw;
+    height:100vh;
 }
-
 
 video {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
+    width:100%;
+    height:100%;
+    object-fit:contain;
 }
-
-
-/* Информация */
 
 .info {
-    position: fixed;
-
-    bottom: 25px;
-    left: 30px;
-
-    font-size: 28px;
-
-    background: rgba(0,0,0,0.5);
-
-    padding: 10px 20px;
-
-    border-radius: 10px;
+    position:fixed;
+    bottom:20px;
+    left:30px;
+    font-size:25px;
 }
-
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="logo">
 📺 ABTV
 </div>
 
-
 <div class="screen">
-
-<video autoplay muted loop playsinline>
-
-    <source src="video/barboskiny.mp4" type="video/mp4">
-
+<video id="player" controls autoplay>
 </video>
-
 </div>
-
 
 <div class="info">
 Сейчас играет: Барбоскины
 </div>
 
+
+<script type="module">
+
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getDatabase, ref, onValue }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+  authDomain: "abtv-c051d.firebaseapp.com",
+  databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "abtv-c051d",
+  storageBucket: "abtv-c051d.firebasestorage.app",
+  messagingSenderId: "351357236534",
+  appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const video = document.getElementById("player");
+
+
+const driveVideo =
+"https://drive.google.com/uc?export=download&id=1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3";
+
+
+onValue(ref(db,"tv"),(snapshot)=>{
+
+let data = snapshot.val();
+
+if(data && data.command=="barboskiny"){
+
+video.src = driveVideo;
+video.play();
+
+}
+
+});
+
+
+</script>
 
 </body>
 </html>

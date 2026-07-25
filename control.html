@@ -1,41 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ABTV Control</title>
+<title>ABTV</title>
+
 <style>
 body {
+    margin:0;
     background:black;
     color:white;
     font-family:Arial;
-    text-align:center;
+    overflow:hidden;
 }
 
-button {
-    width:200px;
-    height:60px;
-    margin:10px;
+.logo {
+    position:fixed;
+    top:20px;
+    right:30px;
+    font-size:40px;
+    color:#00aaff;
+    z-index:10;
+}
+
+.screen {
+    width:100vw;
+    height:100vh;
+}
+
+video {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.info {
+    position:fixed;
+    bottom:20px;
+    left:30px;
     font-size:25px;
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>🎮 ABTV Пульт</h1>
+<div class="logo">
+📺 ABTV
+</div>
 
-<button onclick="send('barboskiny')">
-▶ Барбоскины
-</button>
+<div class="screen">
+<video id="player" controls autoplay>
+</video>
+</div>
 
-<button onclick="send('stop')">
-⏹ Стоп
-</button>
+<div class="info">
+Сейчас играет: Барбоскины
+</div>
 
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getDatabase, ref, onValue }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -53,16 +82,26 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
+const video = document.getElementById("player");
 
-function send(command){
 
-set(ref(db,"tv"),{
-command: command
-});
+const driveVideo =
+"https://drive.google.com/uc?export=download&id=1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3";
+
+
+onValue(ref(db,"tv"),(snapshot)=>{
+
+let data = snapshot.val();
+
+if(data && data.command=="barboskiny"){
+
+video.src = driveVideo;
+video.play();
 
 }
 
-window.send = send;
+});
+
 
 </script>
 
