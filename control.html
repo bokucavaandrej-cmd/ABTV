@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ABTV Control</title>
+<style>
+body {
+    background:black;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+
+button {
+    width:200px;
+    height:60px;
+    margin:10px;
+    font-size:25px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎮 ABTV Пульт</h1>
+
+<button onclick="send('barboskiny')">
+▶ Барбоскины
+</button>
+
+<button onclick="send('stop')">
+⏹ Стоп
+</button>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+  authDomain: "abtv-c051d.firebaseapp.com",
+  databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "abtv-c051d",
+  storageBucket: "abtv-c051d.firebasestorage.app",
+  messagingSenderId: "351357236534",
+  appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+
+function send(command){
+
+set(ref(db,"tv"),{
+command: command
+});
+
+}
+
+window.send = send;
+
+</script>
+
+</body>
+</html>
