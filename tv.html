@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>ABTV</title>
 
 <style>
@@ -8,41 +10,56 @@
 body {
     margin:0;
     background:black;
-    color:white;
-    font-family:Arial;
     overflow:hidden;
+    font-family:Arial;
 }
 
 
 .logo {
+
     position:fixed;
     top:20px;
     right:30px;
-    font-size:45px;
+
     color:#00aaff;
+    font-size:45px;
+
     z-index:10;
+
 }
 
 
 .screen {
+
     width:100vw;
     height:100vh;
+
 }
 
 
-video {
+iframe {
+
     width:100%;
     height:100%;
-    object-fit:contain;
+
+    border:0;
+
 }
+
 
 
 .info {
+
     position:fixed;
     bottom:20px;
     left:30px;
+
+    color:white;
     font-size:25px;
+
 }
+
+
 
 </style>
 
@@ -59,7 +76,10 @@ video {
 
 <div class="screen">
 
-<video id="player" controls autoplay></video>
+<iframe 
+id="player"
+allow="autoplay; fullscreen">
+</iframe>
 
 </div>
 
@@ -112,25 +132,22 @@ const player = document.getElementById("player");
 
 
 
-const videoURL =
-"https://drive.google.com/file/d/1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3/preview";
+const youtubeVideo = 
+"https://www.youtube.com/embed/k4zTxaUwK9I?autoplay=1&controls=0&rel=0";
 
 
 
 onValue(ref(db,"tv"),(snapshot)=>{
 
 
-let data = snapshot.val();
+const data = snapshot.val();
 
 
 
 if(data && data.command === "barboskiny"){
 
 
-player.src = videoURL;
-
-
-player.play();
+player.src = youtubeVideo;
 
 
 }
@@ -144,4 +161,5 @@ player.play();
 
 
 </body>
+
 </html>
