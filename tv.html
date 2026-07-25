@@ -1,113 +1,48 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <title>ABTV</title>
 
 <style>
 
-body{
+body {
     margin:0;
-    background:#000;
+    background:black;
+    color:white;
+    font-family:Arial;
     overflow:hidden;
-    font-family:Arial, sans-serif;
 }
 
 
-/* логотип как Netflix стиль */
-
-.logo{
-
+.logo {
     position:fixed;
-    top:25px;
-    left:35px;
-
-    color:#e50914;
-    font-size:50px;
-    font-weight:bold;
-
-    text-shadow:0 0 20px red;
-
+    top:20px;
+    right:30px;
+    font-size:45px;
+    color:#00aaff;
     z-index:10;
-
 }
 
 
-
-/* экран */
-
-.screen{
-
+.screen {
     width:100vw;
     height:100vh;
-
 }
 
 
-
-/* видео */
-
-iframe{
-
+video {
     width:100%;
     height:100%;
-
-    border:0;
-
-    pointer-events:none;
-
+    object-fit:contain;
 }
 
 
-
-/* нижняя панель */
-
-.info{
-
+.info {
     position:fixed;
-
-    bottom:30px;
-    left:40px;
-
-    color:white;
-
+    bottom:20px;
+    left:30px;
     font-size:25px;
-
-    background:rgba(0,0,0,0.6);
-
-    padding:15px 25px;
-
-    border-left:5px solid #e50914;
-
-    border-radius:10px;
-
 }
-
-
-
-/* LIVE */
-
-.live{
-
-    position:fixed;
-
-    top:35px;
-    right:40px;
-
-    color:white;
-
-    background:#e50914;
-
-    padding:10px 20px;
-
-    border-radius:20px;
-
-    font-weight:bold;
-
-}
-
-
 
 </style>
 
@@ -117,34 +52,20 @@ iframe{
 <body>
 
 
-
 <div class="logo">
-ABTV
+📺 ABTV
 </div>
-
-
-<div class="live">
-🔴 LIVE
-</div>
-
 
 
 <div class="screen">
 
-<iframe 
-id="player"
-allow="autoplay; fullscreen">
-</iframe>
+<video id="player" controls autoplay></video>
 
 </div>
 
 
-
 <div class="info">
-
-Сейчас:
-Барбоскины
-
+Сейчас играет: Барбоскины
 </div>
 
 
@@ -156,26 +77,26 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-import { getDatabase, ref, onValue } 
+import { getDatabase, ref, onValue }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
 
 const firebaseConfig = {
 
-apiKey:"AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
 
-authDomain:"abtv-c051d.firebaseapp.com",
+authDomain: "abtv-c051d.firebaseapp.com",
 
-databaseURL:"https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
 
-projectId:"abtv-c051d",
+projectId: "abtv-c051d",
 
-storageBucket:"abtv-c051d.firebasestorage.app",
+storageBucket: "abtv-c051d.firebasestorage.app",
 
-messagingSenderId:"351357236534",
+messagingSenderId: "351357236534",
 
-appId:"1:351357236534:web:77289c6ecaf932c6a26f97"
+appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
 
 };
 
@@ -187,31 +108,29 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 
-
 const player = document.getElementById("player");
 
 
 
-const channels = {
-
-barboskiny:
-"https://www.youtube.com/embed/k4zTxaUwK9I?autoplay=1&mute=1&controls=0&rel=0"
-
-};
+const videoURL =
+"https://drive.google.com/uc?export=download&id=1ipRkNj0B1TguXBwnvztlo6dp71_Vw-n3";
 
 
 
 onValue(ref(db,"tv"),(snapshot)=>{
 
 
-const data=snapshot.val();
+let data = snapshot.val();
 
 
 
-if(data && channels[data.command]){
+if(data && data.command === "barboskiny"){
 
 
-player.src=channels[data.command];
+player.src = videoURL;
+
+
+player.play();
 
 
 }
@@ -221,20 +140,8 @@ player.src=channels[data.command];
 
 
 
-
-// блокируем управление
-
-document.addEventListener("keydown",(e)=>{
-
-e.preventDefault();
-
-});
-
-
 </script>
 
 
-
 </body>
-
 </html>
