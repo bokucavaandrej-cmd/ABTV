@@ -7,29 +7,37 @@
 
 <style>
 
-body {
+body{
     margin:0;
-    background:black;
+    background:#000;
     overflow:hidden;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
 }
 
 
-.logo {
+/* логотип как Netflix стиль */
+
+.logo{
 
     position:fixed;
-    top:20px;
-    right:30px;
+    top:25px;
+    left:35px;
 
-    color:#00aaff;
-    font-size:45px;
+    color:#e50914;
+    font-size:50px;
+    font-weight:bold;
+
+    text-shadow:0 0 20px red;
 
     z-index:10;
 
 }
 
 
-.screen {
+
+/* экран */
+
+.screen{
 
     width:100vw;
     height:100vh;
@@ -37,25 +45,65 @@ body {
 }
 
 
-iframe {
+
+/* видео */
+
+iframe{
 
     width:100%;
     height:100%;
 
     border:0;
 
+    pointer-events:none;
+
 }
 
 
 
-.info {
+/* нижняя панель */
+
+.info{
 
     position:fixed;
-    bottom:20px;
-    left:30px;
+
+    bottom:30px;
+    left:40px;
 
     color:white;
+
     font-size:25px;
+
+    background:rgba(0,0,0,0.6);
+
+    padding:15px 25px;
+
+    border-left:5px solid #e50914;
+
+    border-radius:10px;
+
+}
+
+
+
+/* LIVE */
+
+.live{
+
+    position:fixed;
+
+    top:35px;
+    right:40px;
+
+    color:white;
+
+    background:#e50914;
+
+    padding:10px 20px;
+
+    border-radius:20px;
+
+    font-weight:bold;
 
 }
 
@@ -69,9 +117,16 @@ iframe {
 <body>
 
 
+
 <div class="logo">
-📺 ABTV
+ABTV
 </div>
+
+
+<div class="live">
+🔴 LIVE
+</div>
+
 
 
 <div class="screen">
@@ -84,8 +139,12 @@ allow="autoplay; fullscreen">
 </div>
 
 
+
 <div class="info">
-Сейчас играет: Барбоскины
+
+Сейчас:
+Барбоскины
+
 </div>
 
 
@@ -97,26 +156,26 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-import { getDatabase, ref, onValue }
+import { getDatabase, ref, onValue } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
+apiKey:"AIzaSyAkuGbdhB5VLy4BEOVtqoXpzZI29eQqOjc",
 
-authDomain: "abtv-c051d.firebaseapp.com",
+authDomain:"abtv-c051d.firebaseapp.com",
 
-databaseURL: "https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
+databaseURL:"https://abtv-c051d-default-rtdb.europe-west1.firebasedatabase.app",
 
-projectId: "abtv-c051d",
+projectId:"abtv-c051d",
 
-storageBucket: "abtv-c051d.firebasestorage.app",
+storageBucket:"abtv-c051d.firebasestorage.app",
 
-messagingSenderId: "351357236534",
+messagingSenderId:"351357236534",
 
-appId: "1:351357236534:web:77289c6ecaf932c6a26f97"
+appId:"1:351357236534:web:77289c6ecaf932c6a26f97"
 
 };
 
@@ -128,26 +187,31 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 
+
 const player = document.getElementById("player");
 
 
 
-const youtubeVideo = 
-"https://www.youtube.com/embed/k4zTxaUwK9I?autoplay=1&controls=0&rel=0";
+const channels = {
+
+barboskiny:
+"https://www.youtube.com/embed/k4zTxaUwK9I?autoplay=1&controls=0&rel=0"
+
+};
 
 
 
 onValue(ref(db,"tv"),(snapshot)=>{
 
 
-const data = snapshot.val();
+const data=snapshot.val();
 
 
 
-if(data && data.command === "barboskiny"){
+if(data && channels[data.command]){
 
 
-player.src = youtubeVideo;
+player.src=channels[data.command];
 
 
 }
@@ -157,7 +221,18 @@ player.src = youtubeVideo;
 
 
 
+
+// блокируем управление
+
+document.addEventListener("keydown",(e)=>{
+
+e.preventDefault();
+
+});
+
+
 </script>
+
 
 
 </body>
